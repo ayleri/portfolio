@@ -1,0 +1,67 @@
+---
+import type { ProjectMedia } from '../types/projects';
+
+interface Props {
+  title: string;
+  media?: ProjectMedia;
+  showDirectLink?: boolean;
+}
+
+const { title, media, showDirectLink = true } = Astro.props;
+---
+
+{media ? (
+  <project-demo>
+    <div class="demo-stage" style={{ '--demo-ratio': media.aspectRatio ?? '16 / 9' }}>
+      <button class="demo-preview" type="button" aria-label={`Play demo: ${title}`} hidden>
+        {media.poster && <img src={media.poster} alt="" loading="lazy" decoding="async" />}
+        <span class="demo-play" aria-hidden="true">
+          <svg width="40" height="40" viewBox="0 0 24 24" focusable="false"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+        </span>
+      </button>
+      <div class="demo-player" hidden></div>
+      <template>
+        {media.kind === 'file' ? (
+          <video controls playsinline preload="none" src={media.src} poster={media.poster} aria-label={`Demo: ${title}`}>
+            {media.captions && <track kind="captions" src={media.captions} srclang="en" label="English" default />}
+          </video>
+          <div class="demo-controls" role="group" aria-label="Video controls" hidden>
+            <input class="demo-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Playback position" disabled />
+            <div class="demo-toolbar">
+              <button class="demo-toggle" type="button" aria-label="Play">
+                <svg class="demo-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+                <svg class="demo-icon-pause" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M7 5h4v14H7zm6 0h4v14h-4z" fill="currentColor" /></svg>
+              </button>
+              <span class="demo-time">0:00 / 0:00</span>
+              <button class="demo-mute" type="button" aria-label="Mute" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" /><path class="demo-volume-waves" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14" /><path class="demo-volume-cross" d="m15 9 6 6m0-6-6 6" hidden /></svg>
+              </button>
+              <input class="demo-volume" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volume" />
+              {media.captions && <button class="demo-captions" type="button" aria-label="Captions" aria-pressed="true">CC</button>}
+              <button class="demo-fullscreen" type="button" aria-label="Enter fullscreen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5" /></svg>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <iframe src={media.src} title={`Demo: ${title}`} allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        )}
+      </template>
+      <noscript>
+        {media.kind === 'file' ? (
+          <video controls playsinline preload="none" src={media.src} poster={media.poster} aria-label={`Demo: ${title}`}>
+            {media.captions && <track kind="captions" src={media.captions} srclang="en" label="English" default />}
+          </video>
+        ) : (
+          <a class="demo-fallback" href={media.watchUrl ?? media.src}>watch demo ↗</a>
+        )}
+      </noscript>
+    </div>
+    <p class="demo-status" role="status"></p>
+    {showDirectLink && <a class="sweep-link demo-direct" href={media.watchUrl ?? media.src}><span>open video ↗</span></a>}
+  </project-demo>
+) : (
+  <div class="demo-stage demo-placeholder">
+    <span>lorem ipsum</span>
+  </div>
+)}

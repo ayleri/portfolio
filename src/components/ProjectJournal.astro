@@ -1,0 +1,40 @@
+---
+import ProjectDemo from './ProjectDemo.astro';
+import type { Project } from '../types/projects';
+
+interface Props {
+  items: Project[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="project-journal">
+  {items.map(project => (
+    <article class="project" id={project.id} tabindex={project.id ? -1 : undefined}>
+      <ProjectDemo title={project.title} media={project.media} showDirectLink={false} />
+      <div class="project-heading">
+        <h2>{project.title}</h2>
+        {project.technologies && project.technologies.length > 0 && (
+          <ul class="project-technologies" aria-label="Technologies" role="list">
+            {project.technologies.map(technology => <li>{technology}</li>)}
+          </ul>
+        )}
+      </div>
+      <div class="project-copy">
+        <p class="project-premise">{project.premise}</p>
+        <p class="project-description">{project.description}</p>
+      </div>
+      {(project.media || (project.links && project.links.length > 0)) && (
+        <div class="project-links">
+          {project.media && (
+            <a class="sweep-link" href={project.media.watchUrl ?? project.media.src}><span>open video ↗</span></a>
+          )}
+          {project.links?.map(link => (
+            <a class="sweep-link" href={link.href}><span>{link.label} ↗</span></a>
+          ))}
+        </div>
+      )}
+    </article>
+  ))}
+</div>

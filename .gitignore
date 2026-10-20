@@ -1,0 +1,8 @@
+TODO.md
+node_modules/
+dist/
+.astro/
+*:Zone.Identifier
+.env
+.env.*
+!.env.example

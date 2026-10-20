@@ -1,0 +1,116 @@
+---
+import '../../style/main.css';
+import ProjectJournal from '../components/ProjectJournal.astro';
+import soundscapeDemo from '../../media/hackathon-demos/soundscape-demo.mp4?url';
+import uoftSvg from '../../media/icons/uoft.svg?raw';
+import icpcIcon from '../../media/icons/icpc.ico?inline';
+import type { Project } from '../types/projects';
+
+// Embed the existing artwork inside an SVG sized for its final inline position.
+const uoftArtwork = uoftSvg.slice(uoftSvg.indexOf('>', uoftSvg.indexOf('<svg')) + 1, uoftSvg.lastIndexOf('</svg>'));
+
+// Replace these examples with your projects. Add media and links when ready.
+const projects: Project[] = [
+  {
+    id: 'graphing-calculator-music',
+    title: 'lorem ipsum',
+    technologies: ['TypeScript', 'React', 'PostgreSQL'],
+    premise: 'Lorem ipsum dolor sit amet.',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  },
+  {
+    id: 'favicon-2048',
+    title: 'dolor sit amet',
+    technologies: ['Python', 'FastAPI'],
+    premise: 'Consectetur adipiscing elit.',
+    description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  },
+  {
+    id: 'draw-the-spire',
+    title: 'consectetur adipiscing',
+    technologies: ['JavaScript', 'Canvas API'],
+    premise: 'Sed do eiusmod tempor incididunt.',
+    description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+  },
+];
+
+const hackathons: Project[] = [
+  {
+    title: 'soundscape',
+    premise: 'Lorem ipsum dolor sit amet.',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    media: {
+      kind: 'file',
+      src: soundscapeDemo,
+      aspectRatio: '16 / 9',
+    },
+  },
+];
+
+export function getStaticPaths() {
+  return [undefined, 'about', 'projects', 'hackathons'].map(page => ({ params: { page } }));
+}
+
+const active = Astro.params.page ?? 'about';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ailen meng</title>
+    <link rel="preload" href="/fonts/source-serif-4.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/mona-sans.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="name">
+        <a href="/" id="title">ailen meng</a>
+      </header>
+      <nav class="navbar">
+        <a class="sweep-link" href="/about/" data-tab="about" aria-current={active === 'about' ? 'page' : undefined}><span>about me</span></a>
+        <a class="sweep-link" href="/projects/" data-tab="projects" aria-current={active === 'projects' ? 'page' : undefined}><span>projects</span></a>
+        <a class="sweep-link" href="/hackathons/" data-tab="hackathons" aria-current={active === 'hackathons' ? 'page' : undefined}><span>hackathons</span></a>
+      </nav>
+      <main>
+        <!-- ABOUT ME -->
+        <section data-panel="about" aria-label="about me" tabindex="-1" hidden={active !== 'about'}>
+          <p>second year cs student at the <svg class="inline-icon inline-icon--uoft" viewBox="30 -25 76 178" width={24 * 76 / 178} height="24" aria-hidden="true" focusable="false"><Fragment set:html={uoftArtwork} /></svg>
+          <a class="sweep-link" href="https://www.utsc.utoronto.ca/home/"><span>university of toronto</span></a>!
+          i love music, video games & competitive programming!
+          </p>
+          <p class="label">currently, i'm</p>
+          <ul class="star-bullets">
+            <li>representing uoft at the <img class="inline-icon" src={icpcIcon} width="16" height="16" alt="" aria-hidden="true" /><a class="sweep-link" href="https://ec.na.icpc.global/"><span>international collegiate programming contest</span></a></li>
+          </ul>
+        </section>
+
+        <!-- projects -->
+        <section data-panel="projects" aria-label="projects" tabindex="-1" hidden={active !== 'projects'}>
+          <p>
+          have you ever dreamt of <a class="sweep-link" href={`#${projects[0].id}`}><span>listening to music on a graphing calculator</span></a>, <a class="sweep-link" href={`#${projects[1].id}`}><span>playing 2048 on a webpage's favicon</span></a>, or <a class="sweep-link" href={`#${projects[2].id}`}><span>rendering images on a game's map</span></a>? no? well uhm... too bad; i made it happen anyway :)
+          </p>
+          <ProjectJournal items={projects} />
+        </section>
+
+        <section data-panel="hackathons" aria-label="hackathons" tabindex="-1" hidden={active !== 'hackathons'}>
+          <p>things i've built at hackathons</p>
+          <ProjectJournal items={hackathons} />
+        </section>
+
+      </main>
+      <footer>
+        <div class="links">
+          <a class="sweep-link" href="/linkedin.html" target="_blank" rel="noopener noreferrer"><span>linkedin</span></a>
+          <a class="sweep-link" href="https://github.com/ayleri" target="_blank" rel="noopener noreferrer"><span>github</span></a>
+          <a class="sweep-link" href="/resume.pdf/" target="_blank" rel="noopener noreferrer"><span>resume</span></a>
+          <a class="sweep-link" href="/email.html" target="_blank" rel="noopener noreferrer"><span>email</span></a>
+        </div>
+      </footer>
+    </div>
+    <script>
+      import '../../js/index.mjs';
+    </script>
+  </body>
+</html>

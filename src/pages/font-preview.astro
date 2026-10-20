@@ -1,0 +1,334 @@
+---
+import '../../style/main.css';
+import '../../style/font-preview.css';
+import ProjectJournal from '../components/ProjectJournal.astro';
+
+const serifFonts = [
+  { id: 'source-serif', name: 'Source Serif 4', defaultSans: 'mona', note: 'The current title font: balanced, understated, and classic.' },
+  { id: 'stix', name: 'STIX Two Text', defaultSans: 'zalando', note: 'The earlier title font, for comparison.' },
+  { id: 'newsreader', name: 'Newsreader', defaultSans: 'dm-sans', note: 'Soft and editorial.' },
+  { id: 'instrument', name: 'Instrument Serif', defaultSans: 'manrope', note: 'Slender, expressive headings.' },
+  { id: 'fraunces', name: 'Fraunces', defaultSans: 'work-sans', note: 'Warm, playful headings.' },
+  { id: 'lora', name: 'Lora', defaultSans: 'work-sans', note: 'A softer, flowing alternative to Fraunces, with a little less visual weight.' },
+  { id: 'dm-serif', name: 'DM Serif Display', defaultSans: 'work-sans', note: 'More contrast and a bolder silhouette for the name and headings.' },
+  { id: 'young-serif', name: 'Young Serif', defaultSans: 'work-sans', note: 'Rounded, substantial letterforms with a warm, slightly retro feel.' },
+  { id: 'cormorant', name: 'Cormorant Garamond', defaultSans: 'work-sans', note: 'Delicate, elegant letterforms for a more literary feel.' },
+  { id: 'libre-baskerville', name: 'Libre Baskerville', defaultSans: 'work-sans', note: 'Sturdy, traditional shapes with an authoritative feel.' },
+  { id: 'literata', name: 'Literata', defaultSans: 'work-sans', note: 'A warm, bookish serif with plenty of character.' },
+  { id: 'bodoni', name: 'Bodoni Moda', defaultSans: 'work-sans', note: 'Crisp contrast and fine strokes for a more dramatic title.' },
+];
+
+const sansFonts = [
+  { id: 'mona', name: 'Mona Sans' },
+  { id: 'work-sans', name: 'Work Sans' },
+  { id: 'zalando', name: 'Zalando Sans' },
+  { id: 'dm-sans', name: 'DM Sans' },
+  { id: 'manrope', name: 'Manrope' },
+  { id: 'inter', name: 'Inter' },
+  { id: 'public-sans', name: 'Public Sans' },
+  { id: 'jakarta', name: 'Plus Jakarta Sans' },
+  { id: 'outfit', name: 'Outfit' },
+  { id: 'space-grotesk', name: 'Space Grotesk' },
+  { id: 'ibm-plex', name: 'IBM Plex Sans' },
+  { id: 'source-sans', name: 'Source Sans 3' },
+  { id: 'noto-sans', name: 'Noto Sans' },
+  { id: 'nunito-sans', name: 'Nunito Sans' },
+  { id: 'karla', name: 'Karla' },
+  { id: 'atkinson', name: 'Atkinson Hyperlegible Next' },
+  { id: 'geist', name: 'Geist' },
+  { id: 'figtree', name: 'Figtree' },
+  { id: 'archivo', name: 'Archivo' },
+  { id: 'hanken', name: 'Hanken Grotesk' },
+  { id: 'schibsted', name: 'Schibsted Grotesk' },
+  { id: 'sora', name: 'Sora' },
+  { id: 'lexend', name: 'Lexend' },
+  { id: 'albert', name: 'Albert Sans' },
+  { id: 'instrument-sans', name: 'Instrument Sans' },
+  { id: 'onest', name: 'Onest' },
+  { id: 'wix', name: 'Wix Madefor Text' },
+  { id: 'red-hat', name: 'Red Hat Text' },
+  { id: 'urbanist', name: 'Urbanist' },
+  { id: 'zalando-semi-expanded', name: 'Zalando Sans SemiExpanded' },
+];
+
+const sample = [{
+  title: 'lorem ipsum',
+  premise: 'Lorem ipsum dolor sit amet.',
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  technologies: ['TypeScript', 'React', 'PostgreSQL'],
+}];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>font preview — ailen meng</title>
+  </head>
+  <body>
+    <div class="wrap">
+      <aside class="font-tools" aria-label="Font comparison controls">
+        <a class="sweep-link" href="/"><span>← back to site</span></a>
+        <h1>font playground</h1>
+        <p>Mix and match fonts, then fine-tune their weight and letter spacing.</p>
+        <div class="font-selectors">
+          <div>
+            <label for="font-serif">Serif</label>
+            <select id="font-serif" disabled>
+              {serifFonts.map(font => (
+                <option value={font.id} data-name={font.name} data-default-sans={font.defaultSans} data-note={font.note}>
+                  {font.name}{font.id === 'source-serif' ? ' (current)' : ''}
+                </option>
+              ))}
+            </select>
+            <label class="control-label" for="serif-spacing">Serif letter spacing (em)</label>
+            <input id="serif-spacing" type="number" min="-0.08" max="0.12" step="0.001" value="-0.035" aria-describedby="spacing-hint" disabled />
+          </div>
+          <div>
+            <label for="font-sans">Sans serif</label>
+            <select id="font-sans" disabled>
+              {sansFonts.map(font => (
+                <option value={font.id} data-name={font.name}>
+                  {font.name}{font.id === 'mona' ? ' (current)' : ''}
+                </option>
+              ))}
+            </select>
+            <label class="control-label" for="sans-weight">Sans-serif weight</label>
+            <select id="sans-weight" disabled>
+              <option value="400">Regular (400)</option>
+              <option value="425" selected>425</option>
+              <option value="450">450 (between regular and medium)</option>
+              <option value="500">Medium (500)</option>
+              <option value="600">Semibold (600)</option>
+            </select>
+            <label class="control-label" for="sans-spacing">Sans-serif letter spacing (em)</label>
+            <input id="sans-spacing" type="number" min="-0.08" max="0.12" step="0.001" value="0.01" aria-describedby="spacing-hint" disabled />
+          </div>
+        </div>
+        <p class="spacing-hint" id="spacing-hint">Negative values tighten letters; positive values spread them out.</p>
+        <p class="font-note" role="status" aria-live="polite">Source Serif 4 + Mona Sans (425). {serifFonts[0].note}</p>
+        <p class="font-no-script">Enable JavaScript to switch pairings.</p>
+      </aside>
+
+      <div class="font-specimen" id="font-specimen">
+        <header class="name"><a href="/">ailen meng</a></header>
+        <nav class="navbar" aria-label="Sample site navigation">
+          <a class="sweep-link" href="/about/" aria-current="page"><span>about</span></a>
+          <a class="sweep-link" href="/projects/"><span>projects</span></a>
+          <a class="sweep-link" href="/hackathons/"><span>hackathons</span></a>
+        </nav>
+        <main>
+          <p>second year cs student at uoft!</p>
+          <p class="label">recently</p>
+          <ul class="bar">
+            <li>backend engineer intern at <a class="sweep-link" href="https://www.magnusdigital.co.id"><span>magnus</span></a></li>
+            <li>tech &amp; hack coordinator at <a class="sweep-link" href="https://www.garudahacks.com"><span>garuda hacks</span></a><span class="sub">↳ shipped its app on both app stores, 600+ users</span></li>
+          </ul>
+          <ProjectJournal items={sample} />
+        </main>
+        <footer>
+          <div class="links">
+            <a class="sweep-link" href="https://github.com/ayleri" target="_blank" rel="noopener noreferrer"><span>github</span></a>
+            <a class="sweep-link" href="/"><span>back to site</span></a>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <script>
+      const serifSelect = document.querySelector<HTMLSelectElement>('#font-serif')!;
+      const sansSelect = document.querySelector<HTMLSelectElement>('#font-sans')!;
+      const weightSelect = document.querySelector<HTMLSelectElement>('#sans-weight')!;
+      const specimen = document.querySelector<HTMLElement>('#font-specimen')!;
+      const status = document.querySelector<HTMLElement>('.font-note')!;
+      const spacingControls = [
+        { input: document.querySelector<HTMLInputElement>('#serif-spacing')!, property: '--serif-spacing', param: 'serif-spacing', initial: '-0.035' },
+        { input: document.querySelector<HTMLInputElement>('#sans-spacing')!, property: '--sans-spacing', param: 'sans-spacing', initial: '0.01' },
+      ];
+      const spacing: Record<string, string> = {};
+      document.querySelector<HTMLElement>('.font-no-script')!.hidden = true;
+      serifSelect.disabled = false;
+      sansSelect.disabled = false;
+      weightSelect.disabled = false;
+      let latestRequest = 0;
+      let applied = { serif: 'source-serif', sans: 'mona', 'sans-weight': '425' };
+
+      function saveSelection() {
+        const fragment = new URLSearchParams({ ...applied, ...spacing }).toString();
+        history.replaceState(null, '', `${location.pathname}#${fragment}`);
+      }
+
+      function updateSpacing(control: typeof spacingControls[number], save = true) {
+        if (control.input.value === '' || !control.input.validity.valid) return;
+        const value = String(control.input.valueAsNumber);
+        spacing[control.param] = value;
+        specimen.style.setProperty(control.property, `${value}em`);
+        if (save) saveSelection();
+      }
+
+      for (const control of spacingControls) {
+        control.input.disabled = false;
+        control.input.addEventListener('input', () => updateSpacing(control));
+        control.input.addEventListener('blur', () => {
+          if (control.input.value === '' || !control.input.validity.valid) {
+            control.input.value = spacing[control.param];
+          }
+        });
+      }
+
+      async function previewPairing() {
+        const request = ++latestRequest;
+        const serifOption = serifSelect.selectedOptions[0];
+        const sansOption = sansSelect.selectedOptions[0];
+        const serif = serifOption.dataset.name;
+        const sans = sansOption.dataset.name;
+        const weight = weightSelect.value;
+        status.textContent = `Loading ${serif} + ${sans} (${weight})…`;
+        try {
+          await Promise.all([
+            document.fonts.load(`400 44px "${serif}"`),
+            document.fonts.load(`${weight} 16px "${sans}"`),
+          ]);
+          if (request !== latestRequest) return;
+          specimen.style.setProperty('--serif', `"${serif}", Georgia, serif`);
+          specimen.style.setProperty('--sans', `"${sans}", system-ui, sans-serif`);
+          specimen.style.setProperty('--sans-weight', weight);
+          applied = { serif: serifOption.value, sans: sansOption.value, 'sans-weight': weight };
+          status.textContent = `${serif} + ${sans} (${weight}). ${serifOption.dataset.note}`;
+          saveSelection();
+        } catch {
+          if (request !== latestRequest) return;
+          serifSelect.value = applied.serif;
+          sansSelect.value = applied.sans;
+          weightSelect.value = applied['sans-weight'];
+          status.textContent = 'That pairing couldn’t load. Please try again.';
+        }
+      }
+
+      function selectIfAvailable(select: HTMLSelectElement, value: string | null | undefined) {
+        if ([...select.options].some(option => option.value === value)) select.value = value!;
+      }
+
+      serifSelect.addEventListener('change', previewPairing);
+      sansSelect.addEventListener('change', previewPairing);
+      weightSelect.addEventListener('change', previewPairing);
+
+      function restoreSelectionFromUrl() {
+        serifSelect.value = 'source-serif';
+        sansSelect.value = 'mona';
+        weightSelect.value = '425';
+        const initial = location.hash.slice(1);
+        const params = new URLSearchParams(initial);
+        // Preserve links from the earlier combined selector, such as #lora.
+        const legacy = initial && !initial.includes('=') ? initial : null;
+        selectIfAvailable(serifSelect, params.get('serif') ?? (legacy === 'current' ? 'source-serif' : legacy));
+        selectIfAvailable(sansSelect, params.get('sans') ?? (legacy ? serifSelect.selectedOptions[0].dataset.defaultSans : null));
+        selectIfAvailable(weightSelect, params.get('sans-weight'));
+        for (const control of spacingControls) {
+          control.input.value = params.get(control.param) ?? control.initial;
+          if (control.input.value === '' || !control.input.validity.valid) control.input.value = control.initial;
+          updateSpacing(control, false);
+        }
+        previewPairing();
+      }
+
+      window.addEventListener('hashchange', restoreSelectionFromUrl);
+      restoreSelectionFromUrl();
+    </script>
+  </body>
+</html>
+
+<style>
+  .font-tools {
+    padding-bottom: var(--space-8);
+    margin-bottom: var(--space-8);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .font-tools > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    margin-bottom: var(--space-4);
+    font-size: 14px;
+  }
+
+  .font-tools h1 {
+    --text-spacing: var(--sans-spacing);
+    font-family: var(--sans);
+    font-size: 24px;
+    margin-bottom: var(--space-3);
+  }
+
+  .font-tools label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: 14px;
+  }
+
+  .font-selectors {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .font-tools select,
+  .font-tools input {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+    min-height: var(--touch-target);
+    padding: var(--space-2);
+    border: 1px solid var(--muted);
+    border-radius: var(--radius-small);
+    background: var(--bg);
+    color: var(--fg);
+    font: inherit;
+    font-size: 16px;
+  }
+
+  .font-tools select:focus-visible,
+  .font-tools input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: var(--space-1);
+  }
+
+  .font-note {
+    margin: var(--space-3) 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .font-tools .control-label {
+    margin-top: var(--space-3);
+  }
+
+  .spacing-hint {
+    margin: var(--space-3) 0 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .font-specimen {
+    --text-spacing: var(--sans-spacing);
+    --sans-weight: 425;
+    font-family: var(--sans);
+    font-weight: var(--sans-weight);
+    letter-spacing: var(--text-spacing);
+  }
+
+  .font-specimen :global(.navbar),
+  .font-specimen :global(.label),
+  .font-specimen :global(.demo-placeholder),
+  .font-specimen :global(.demo-fallback) {
+    font-weight: 400;
+  }
+
+  @media (max-width: 599px) {
+    .font-selectors {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -170,6 +170,16 @@ a:focus-visible {
   text-decoration: none;
 }
 
+.name-details {
+  --text-spacing: var(--sans-spacing);
+  margin: var(--space-2) 0 0;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: var(--sans-weight);
+  line-height: 1.5;
+}
+
 h1,
 h2,
 h3 {

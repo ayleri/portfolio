@@ -69,7 +69,7 @@ const active = Astro.params.page ?? 'about';
         <a href="/" id="title">ailen meng</a>
       </header>
       <nav class="navbar">
-        <a class="sweep-link" href="/about/" data-tab="about" aria-current={active === 'about' ? 'page' : undefined}><span>about me</span></a>
+        <a class="sweep-link" href="/" data-tab="about" aria-current={active === 'about' ? 'page' : undefined}><span>about me</span></a>
         <a class="sweep-link" href="/projects/" data-tab="projects" aria-current={active === 'projects' ? 'page' : undefined}><span>projects</span></a>
         <a class="sweep-link" href="/hackathons/" data-tab="hackathons" aria-current={active === 'hackathons' ? 'page' : undefined}><span>hackathons</span></a>
       </nav>

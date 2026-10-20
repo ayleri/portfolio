@@ -5,7 +5,8 @@ const panels = [...document.querySelectorAll('main [data-panel]')];
 const links = [...document.querySelectorAll('.navbar [data-tab]')];
 const normalize = path => path.replace(/\/$/, '') || '/';
 const routes = new Map(links.map(link => [normalize(new URL(link.href).pathname), link.dataset.tab]));
-routes.set('/', 'about');
+// Keep older /about/ links and browser-history entries working.
+routes.set('/about', 'about');
 
 function showPanel(focus = false) {
   const active = routes.get(normalize(location.pathname));

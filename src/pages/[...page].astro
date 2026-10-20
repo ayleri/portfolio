@@ -77,12 +77,12 @@ const active = Astro.params.page ?? 'about';
         <!-- ABOUT ME -->
         <section data-panel="about" aria-label="about me" tabindex="-1" hidden={active !== 'about'}>
           <p>second year cs student at the <svg class="inline-icon inline-icon--uoft" viewBox="30 -25 76 178" width={24 * 76 / 178} height="24" aria-hidden="true" focusable="false"><Fragment set:html={uoftArtwork} /></svg>
-          <a class="sweep-link" href="https://www.utsc.utoronto.ca/home/"><span>university of toronto</span></a>!
+          <a class="sweep-link" href="https://www.utsc.utoronto.ca/home/" target="_blank" rel="noopener noreferrer"><span>university of toronto</span></a>!
           i love music, video games & competitive programming!
           </p>
           <p class="label">currently, i'm</p>
           <ul class="star-bullets">
-            <li>representing uoft at the <img class="inline-icon" src={icpcIcon} width="16" height="16" alt="" aria-hidden="true" /><a class="sweep-link" href="https://ec.na.icpc.global/"><span>international collegiate programming contest</span></a></li>
+            <li>representing uoft at the <img class="inline-icon" src={icpcIcon} width="16" height="16" alt="" aria-hidden="true" /><a class="sweep-link" href="https://ec.na.icpc.global/" target="_blank" rel="noopener noreferrer"><span>international collegiate programming contest</span></a></li>
           </ul>
         </section>
 

@@ -54,6 +54,7 @@
 }
 
 html {
+  scrollbar-gutter: stable;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -322,6 +323,7 @@ p {
 .project-heading {
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-3);
   margin-top: var(--space-4);
@@ -359,10 +361,9 @@ p {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: var(--space-2);
   margin: 0;
-  margin-inline-start: auto;
   padding: 0;
   list-style: none;
 }

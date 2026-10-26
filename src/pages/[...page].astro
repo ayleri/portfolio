@@ -1,6 +1,8 @@
 ---
 import '../../style/main.css';
 import ProjectJournal from '../components/ProjectJournal.astro';
+import AsciiOcean from '../components/AsciiOcean.astro';
+import FooterLinks from '../components/FooterLinks.astro';
 import soundscapeDemo from '../../media/hackathon-demos/soundscape-demo.mp4?url';
 import uoftSvg from '../../media/icons/uoft.svg?raw';
 import icpcIcon from '../../media/icons/icpc.ico?inline';
@@ -106,14 +108,10 @@ const active = Astro.params.page ?? 'about';
 
       </main>
       <footer>
-        <div class="links">
-          <a class="sweep-link" href="/linkedin.html" target="_blank" rel="noopener noreferrer"><span>linkedin</span></a>
-          <a class="sweep-link" href="https://github.com/ayleri" target="_blank" rel="noopener noreferrer"><span>github</span></a>
-          <a class="sweep-link" href="/resume.pdf/" target="_blank" rel="noopener noreferrer"><span>resume</span></a>
-          <a class="sweep-link" href="/email.html" target="_blank" rel="noopener noreferrer"><span>email</span></a>
-        </div>
+        <FooterLinks />
       </footer>
     </div>
+    <AsciiOcean />
     <script>
       import '../../js/index.mjs';
     </script>

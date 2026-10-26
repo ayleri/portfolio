@@ -1,5 +1,4 @@
 import './demo.mjs';
-import './particles.mjs';
 
 const panels = [...document.querySelectorAll('main [data-panel]')];
 const links = [...document.querySelectorAll('.navbar [data-tab]')];

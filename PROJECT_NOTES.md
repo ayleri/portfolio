@@ -21,6 +21,26 @@ Edit `src/pages/[...page].astro` for the header, navigation, footer, and all pag
 
 With JavaScript disabled or still downloading, each route remains styled and readable, and links work as ordinary page navigation.
 
+### Ocean background
+
+`src/components/AsciiOcean.astro` places a fixed ASCII ocean across the entire viewport on About, Projects, and Hackathons. A fine grid, sharks in muted species-specific colors, and rose fish fade to 20% opacity behind the content column and reach full opacity in the side margins, with an eased transition spanning up to 256px on each side. Fish use simple dash glyphs. ASCII resolution uses 36–160 columns with a target cell width of 11px; fewer cells produce larger glyphs. Shark size follows the viewport independently of the grid, keeping the size differences consistent across screens. The scene starts with five sharks: classic in dusty rose (#A65D73), hammerhead in deep plum (#564147), tiger in muted mauve (#BEA5AB), a white thresher with gray lettering, and a gray nurse shark. The other species use the remaining supplied pink shades: great hammerhead #D98CA1, zebra #753148, and mako #43242D. Default relative sizes are tiger 0.55, nurse 0.85, classic 0.9, thresher 1.15, and hammerhead 1.6. The overall simulation speed is 0.8. Smaller sharks receive faster cruising speeds automatically; the giant hammerhead retains its explicit slow speed multiplier of 0.4. Sharks anticipate full-body encounters, steer aside, and slow down nearby; residual contacts are separated without bending their spines. Sharks can swim beyond the viewport and gently steer back, with off-screen positions preserved during resizing. The canvas lets clicks and scrolling pass through. Moving a pointer scatters nearby fish; tapping or clicking outside controls creates a splash. A fixed pause/resume button sits in the bottom-right corner. Reduced motion shows a still scene, and rendering pauses when the browser tab is hidden. The ocean keeps swimming across panel navigation and resizes with the viewport. Without JavaScript the decoration is omitted.
+
+`AsciiOcean.astro` contains the markup and scoped styles; its external script, `js/ascii-ocean.mjs`, registers the custom element, connects the controls, and manages its lifecycle.
+
+The simulation is adapted from the MIT-licensed source credited by the Framer component. Its code, upstream revision, and adaptation notes are in `src/lib/ascii-ocean/`; the license is also published from `public/licenses/ascii-ocean.txt`. Shark styles, fish count, and speed are configured in `engine.ts`; the character palette follows CSS variables in `renderer.ts`.
+
+ASCII artwork uses JetBrains Mono Regular, served locally from `public/fonts/jetbrains-mono-regular.woff2` with its OFL license alongside it. The canvas explicitly loads the font and redraws once ready, including for a reduced-motion still scene. The site's text and ocean controls retain their existing fonts.
+
+Shark characters have shaded cell backgrounds in their species color, with brighter ridge and occasional glint cells. Edge glyphs remain unfilled. Highlights share the center-column transparency and pause fade, and remain still under reduced motion.
+
+Pausing with the corner button fades the sharks, fish, and wakes out over 900ms while they keep swimming, then stops rendering once they are hidden. Resuming fades the same scene back in. Rapid toggles reverse the fade smoothly. The grid stays visible during resizing and navigation while paused. Reduced motion skips the fade and still shows a static ocean unless the user has explicitly paused it.
+
+The adjacent `?!` button adds one shark with a random species and relative size from 0.35–1.35 without resetting the existing scene. Its speed follows the same smaller-is-faster rule. It resumes an explicitly paused ocean so the new shark becomes visible, while reduced-motion mode adds it to the still scene. New sharks keep their species color and persist when switching tabs. A screen-reader status announces the updated shark count.
+
+### Footer icons
+
+`src/components/FooterLinks.astro` contains the LinkedIn, GitHub, Devpost, resume, and email destinations and SVG icons. Each named link has a 44px target and tooltip. The white icon reveal stays aligned with the rose background sweep, including keyboard focus and reduced motion. Brand paths come from Simple Icons (CC0; LinkedIn from v11.15.0); its license is published from `public/licenses/social-icons.txt`.
+
 ### Add a page
 
 Add a route name to `getStaticPaths()`, update the `active` selection, and add a section with `data-panel="name"` and a matching navigation link with `data-tab="name"` in the same source page. Set the section's `hidden` attribute from `active`, as the existing sections do. The browser script discovers routes from those links; no separate HTML source is needed.
@@ -71,9 +91,7 @@ The reusable player lives in `src/components/ProjectDemo.astro`; `js/demo.mjs` a
 
 ## Mouse decoration
 
-`js/particles.mjs` draws a sparse trail of small snowflakes and stars behind the content only while the mouse moves. Particles start within 1px of the cursor tip, appear immediately at low opacity, and drift and fade away. Each particle independently picks a weighted random color: 15% site `--accent`, 18% light grey (`#C4C1C2`, visible against white), 47% grey, and 20% charcoal. `MAX_PARTICLES` and `SPAWN_INTERVAL` control density; particle lifetimes, size, and drift are set in the same module.
-
-The canvas never intercepts clicks. New particles stop when the mouse stops moving, and drawing stops after the remaining particles fade. No new particles appear while dragging. It clears on blur, hidden tabs, and resize, and is disabled for touch-only pointers, reduced-motion preferences, forced colors, and print. No external assets or libraries are needed.
+The previous snowflake/star trail in `js/particles.mjs` is disabled: `js/index.mjs` no longer imports it. The ocean's passive hover and splash interactions provide cursor feedback instead, while retaining normal link, button, and touch-scrolling behavior.
 
 ## Fonts
 

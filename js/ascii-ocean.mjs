@@ -7,9 +7,7 @@ class AsciiOcean extends HTMLElement {
   connectedCallback() {
     const canvas = this.querySelector('canvas');
     const button = this.querySelector('.ocean-pause');
-    const addButton = this.querySelector('.ocean-add');
-    const status = this.querySelector('[role="status"]');
-    if (!canvas?.getContext('2d') || !button || !addButton) return;
+    if (!canvas?.getContext('2d') || !button) return;
 
     this.hidden = false;
     this.engine = new OceanEngine(canvas);
@@ -31,15 +29,6 @@ class AsciiOcean extends HTMLElement {
     button.addEventListener('click', () => {
       userPaused = !userPaused;
       updatePlayback();
-    }, options);
-    addButton.addEventListener('click', () => {
-      // Make a new arrival visible when the user has paused the ocean.
-      if (userPaused) {
-        userPaused = false;
-        updatePlayback();
-      }
-      const count = this.engine?.addRandomShark();
-      if (status && count) status.textContent = `${count} sharks in the ocean.`;
     }, options);
     motion.addEventListener('change', updatePlayback, options);
     updatePlayback();

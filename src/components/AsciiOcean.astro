@@ -1,9 +1,6 @@
 <ascii-ocean class="ascii-ocean" hidden>
   <canvas aria-hidden="true"></canvas>
   <div class="ocean-controls">
-    <button class="ocean-button ocean-add" type="button" aria-label="Add a random shark" title="Add a random shark">
-      <span aria-hidden="true">?!</span>
-    </button>
     <button class="ocean-button ocean-pause" type="button" aria-label="Pause ocean animation" title="Pause ocean animation">
       <svg class="ocean-pause-icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
         <path d="M5 3v10M11 3v10" fill="none" stroke="currentColor" stroke-width="2" />
@@ -13,7 +10,6 @@
       </svg>
     </button>
   </div>
-  <span class="ocean-status" role="status"></span>
 </ascii-ocean>
 
 <style>
@@ -107,17 +103,6 @@
 
   [data-paused] .ocean-play-icon {
     display: block;
-  }
-
-  .ocean-status {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
   }
 
   @media print, (forced-colors: active) {

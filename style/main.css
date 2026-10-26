@@ -234,6 +234,12 @@ p {
   margin: 0 0 var(--space-2);
 }
 
+.label--sans {
+  --text-spacing: var(--sans-spacing);
+  font-family: var(--sans);
+  font-weight: var(--sans-weight);
+}
+
 .inline-icon {
   display: inline-block;
   width: var(--space-4);

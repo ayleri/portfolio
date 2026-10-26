@@ -1,0 +1,10 @@
+/* The animated star field is separate from the catalogue's product artwork. */
+body::before {
+  opacity: var(--catalogue-stars-opacity, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    opacity: 0.1;
+  }
+}

@@ -29,15 +29,17 @@ With JavaScript disabled or still downloading, each route remains styled and rea
 
 The simulation is adapted from the MIT-licensed source credited by the Framer component. Its code, upstream revision, and adaptation notes are in `src/lib/ascii-ocean/`; the license is also published from `public/licenses/ascii-ocean.txt`. Shark styles, fish count, and speed are configured in `engine.ts`; the character palette follows CSS variables in `renderer.ts`.
 
-ASCII artwork uses JetBrains Mono Regular, served locally from `public/fonts/jetbrains-mono-regular.woff2` with its OFL license alongside it. The canvas explicitly loads the font and redraws once ready, including for a reduced-motion still scene. The site's text and ocean controls retain their existing fonts. The “currently, i'm” label uses Mona Sans through the `label--sans` modifier.
+ASCII artwork uses JetBrains Mono Regular, served locally from `public/fonts/jetbrains-mono-regular.woff2` with its OFL license alongside it. The canvas explicitly loads the font and redraws once ready, including for a reduced-motion still scene. The site's text and ocean controls retain their existing fonts. The shared `.label` style stays serif; only the “currently, i'm” text uses Mona Sans through the `.currently-text` span.
 
 Shark characters have shaded cell backgrounds in their species color, with brighter ridge and occasional glint cells. Edge glyphs remain unfilled. Highlights share the center-column transparency and pause fade, and remain still under reduced motion.
 
-Pausing with the corner button fades the sharks, fish, and wakes out over 900ms while they keep swimming, then stops rendering once they are hidden. Resuming fades the same scene back in. Rapid toggles reverse the fade smoothly. The grid stays visible during resizing and navigation while paused. Reduced motion skips the fade and still shows a static ocean unless the user has explicitly paused it.
+Sharks receive an additional 50% opacity reduction over the middle column, easing back to their normal opacity toward the sides. This additional fade applies to shark lettering and highlights; grid and fish opacity stay independent.
+
+Pausing with the corner button fades the sharks, fish, and wakes out over 750ms while they keep swimming, then stops rendering once they are hidden. Resuming fades the same scene back in. Rapid toggles reverse the fade smoothly. The grid stays visible during resizing and navigation while paused. Reduced motion skips the fade and still shows a static ocean unless the user has explicitly paused it.
 
 ### Footer icons
 
-`src/components/FooterLinks.astro` contains the GitHub, LinkedIn, Devpost, resume, and email destinations and SVG icons. Each named link has a 44px target and a borderless Mona Sans tooltip using the page background and muted gray text, left-aligned below its icon. Labels appear on hover and keyboard focus, remain hoverable across the gap, and wrap within the column. `js/footer-links.mjs` handles Escape dismissal without moving keyboard focus. The white icon reveal stays aligned with the rose background sweep, including keyboard focus and reduced motion. Brand paths come from Simple Icons (CC0; LinkedIn from v11.15.0); its license is published from `public/licenses/social-icons.txt`.
+`src/components/FooterLinks.astro` contains the GitHub, LinkedIn, Devpost, resume, and email destinations and SVG icons. Each named link has a 44px target and a borderless Mona Sans tooltip using the page background and muted gray text, left-aligned below its icon. Tooltips display the destination without its protocol (or just `resume.pdf`), while links retain their accessible names. They appear on hover and keyboard focus, remain hoverable across the gap, and wrap within the column. `js/footer-links.mjs` handles Escape dismissal without moving keyboard focus. The white icon reveal stays aligned with the rose background sweep, including keyboard focus and reduced motion. Brand paths come from Simple Icons (CC0; LinkedIn from v11.15.0); its license is published from `public/licenses/social-icons.txt`.
 
 ### Add a page
 

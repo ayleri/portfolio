@@ -4,7 +4,7 @@ import { World } from './world';
 const STEP = 1 / 60;
 const MAX_STEPS = 4;
 const SPEED = 0.8;
-const FADE_DURATION = 900;
+const FADE_DURATION = 750;
 
 /** Runs the upstream simulation only while its canvas is visible and playing. */
 export class OceanEngine {

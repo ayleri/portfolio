@@ -46,18 +46,28 @@ const links = [
     ]
   }
 ];
+
+function displayLink(href: string) {
+  return href
+    .replace(/^https?:\/\//, '')
+    .replace(/^www\./, '')
+    .replace(/^mailto:/, '')
+    .replace(/^\/+|\/+$/g, '');
+}
 ---
 
 <nav class="footer-links" aria-label="Social and contact links">
   {links.map((link, index) => (
     <a
       class="footer-link"
+      style={`--footer-link-index: ${index}`}
       href={link.href}
-      aria-labelledby={`footer-tooltip-${index}`}
+      aria-label={link.label}
+      aria-describedby={`footer-tooltip-${index}`}
       target={link.href.startsWith('mailto:') ? undefined : '_blank'}
       rel={link.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
     >
-      <span class="footer-tooltip" id={`footer-tooltip-${index}`} role="tooltip">{link.label}</span>
+      <span class="footer-tooltip" id={`footer-tooltip-${index}`} role="tooltip">{displayLink(link.href)}</span>
       {[false, true].map(reveal => (
         <span class:list={['icon-layer', { 'icon-layer--reveal': reveal }]} aria-hidden="true">
           <svg
@@ -81,6 +91,7 @@ const links = [
 
 <style>
   .footer-links {
+    container-type: inline-size;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
@@ -133,13 +144,14 @@ const links = [
   }
 
   .footer-tooltip {
+    --tooltip-inset: calc((var(--touch-target) - var(--space-5)) / 2 - var(--space-2));
     position: absolute;
     z-index: 2;
     top: calc(100% + var(--space-2));
     /* Align the label text with the icon inside its larger click target. */
-    left: calc((var(--touch-target) - var(--space-5)) / 2 - var(--space-2));
+    left: var(--tooltip-inset);
     width: max-content;
-    max-width: calc(var(--space-16) * 2);
+    max-width: min(calc(var(--space-16) * 4), calc(100cqi - var(--footer-link-index) * (var(--touch-target) + var(--space-2)) - var(--tooltip-inset)));
     padding: var(--space-1) var(--space-2);
     border-radius: var(--radius-small);
     background: var(--bg);

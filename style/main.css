@@ -234,7 +234,7 @@ p {
   margin: 0 0 var(--space-2);
 }
 
-.label--sans {
+.currently-text {
   --text-spacing: var(--sans-spacing);
   font-family: var(--sans);
   font-weight: var(--sans-weight);

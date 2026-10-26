@@ -256,6 +256,7 @@ export class AsciiRenderer {
   private ink: string;
   private grid: string;
   private sharkColors: Record<SharkKind, string>;
+  private sharkOpacity = new Float32Array(0);
 
   private dotKind = new Uint8Array(0); // 0 none, 1 blue, 2 green, 3 red, 4 pale
   private dotPhase = new Float32Array(0);
@@ -350,6 +351,21 @@ export class AsciiRenderer {
     this.cw = width / this.cols;
     this.ch = Math.round(this.cw * 1.45);
     this.rows = Math.ceil(height / this.ch);
+
+    // Fade just the sharks more strongly over the content column. Match the
+    // canvas mask's responsive boundaries so the grid and fish keep their opacity.
+    const styles = getComputedStyle(this.canvas);
+    const contentWidth = parseFloat(styles.getPropertyValue("--maxw"));
+    const narrowInset = parseFloat(styles.getPropertyValue("--space-24"));
+    const maxFade = parseFloat(styles.getPropertyValue("--space-16")) * 4;
+    const columnStart = Math.max(Math.min(width * 0.25, narrowInset), (width - contentWidth) / 2);
+    const centerHalf = width / 2 - columnStart;
+    const fadeWidth = Math.min(maxFade, columnStart);
+    this.sharkOpacity = new Float32Array(this.cols);
+    for (let col = 0; col < this.cols; col++) {
+      const distance = Math.abs((col + 0.5) * this.cw - width / 2);
+      this.sharkOpacity[col] = 0.5 + 0.5 * smoothstep(centerHalf, centerHalf + fadeWidth, distance);
+    }
 
     this.canvas.width = Math.round(width * dpr);
     this.canvas.height = Math.round(height * dpr);
@@ -785,7 +801,7 @@ export class AsciiRenderer {
       const color = this.sharkColors[KINDS[sharkKind[i]]];
       const whiteShark = color === "#ffffff";
       const lettering = whiteShark ? "#969196" : color;
-      const depth = Math.min(1, 0.6 + sharkDepth[i] * 0.4);
+      const depth = Math.min(1, 0.6 + sharkDepth[i] * 0.4) * this.sharkOpacity[i % cols];
       let glyph: string;
       if (flag === FLAG_EDGE) {
         const set = shade >= 0.5 ? EDGE_HEAVY : EDGE_LIGHT;
